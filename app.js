@@ -355,6 +355,8 @@ function createPromptCard(prompt) {
             <pre>${escapeHTML(prompt.prompt)}</pre>
         </div>
 
+        ${buildVariableInputsHTML(prompt.prompt)}
+
         <div class="card-explanation">
             <p class="explanation-label">
                 <span>💡</span>
@@ -377,9 +379,33 @@ function createPromptCard(prompt) {
 }
 
 function setupCardEventListeners(card, prompt) {
-    // Copy button
+    const preEl = card.querySelector('.prompt-code pre');
+    const variableInputs = card.querySelectorAll('.variable-input');
+
+    // Collect current variable values from inputs
+    function getVariableValues() {
+        const values = {};
+        variableInputs.forEach(input => {
+            values[input.dataset.var] = input.value;
+        });
+        return values;
+    }
+
+    // Get the customized prompt text (plain text for copying)
+    function getCustomizedPrompt() {
+        return injectVariables(prompt.prompt, getVariableValues());
+    }
+
+    // Real-time prompt update on variable input
+    variableInputs.forEach(input => {
+        input.addEventListener('input', () => {
+            preEl.innerHTML = renderPromptWithHighlights(prompt.prompt, getVariableValues());
+        });
+    });
+
+    // Copy button - copies customized version
     const copyBtn = card.querySelector('.copy-btn');
-    copyBtn.addEventListener('click', () => copyToClipboard(prompt.prompt, copyBtn));
+    copyBtn.addEventListener('click', () => copyToClipboard(getCustomizedPrompt(), copyBtn));
 
     // Framework badge click → quick filter
     card.querySelectorAll('.framework-badge').forEach(badge => {
@@ -508,6 +534,75 @@ function escapeHTML(str) {
     const div = document.createElement('div');
     div.textContent = str;
     return div.innerHTML;
+}
+
+// Build HTML for variable input fields
+function buildVariableInputsHTML(promptText) {
+    const vars = extractVariables(promptText);
+    if (vars.length === 0) return '';
+
+    const fields = vars.map(v => `
+        <div class="variable-field">
+            <label class="variable-label" for="var-${v}">${humanizeVar(v)}</label>
+            <input type="text" class="variable-input" id="var-${v}" data-var="${v}" placeholder="Enter ${humanizeVar(v).toLowerCase()}..." autocomplete="off">
+        </div>
+    `).join('');
+
+    return `
+        <div class="prompt-variables">
+            <p class="variables-header">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                    <path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+                Customize Variables
+            </p>
+            <div class="variables-grid">
+                ${fields}
+            </div>
+        </div>
+    `;
+}
+
+// Extract unique {{VARIABLE}} placeholders from prompt text
+function extractVariables(promptText) {
+    const regex = /\{\{([A-Z_]+)\}\}/g;
+    const vars = [];
+    let match;
+    while ((match = regex.exec(promptText)) !== null) {
+        if (!vars.includes(match[1])) {
+            vars.push(match[1]);
+        }
+    }
+    return vars;
+}
+
+// Convert "TECH_STACK" → "Tech Stack"
+function humanizeVar(varName) {
+    return varName.split('_').map(w => w.charAt(0) + w.slice(1).toLowerCase()).join(' ');
+}
+
+// Inject variable values into prompt text, return plain text version
+function injectVariables(promptText, values) {
+    let result = promptText;
+    for (const [varName, value] of Object.entries(values)) {
+        if (value) {
+            result = result.replaceAll(`{{${varName}}}`, value);
+        }
+    }
+    return result;
+}
+
+// Render prompt text with HTML highlighting for filled variables
+function renderPromptWithHighlights(promptText, values) {
+    let result = escapeHTML(promptText);
+    for (const [varName, value] of Object.entries(values)) {
+        if (value) {
+            const escaped = escapeHTML(value);
+            const placeholder = escapeHTML(`{{${varName}}}`);
+            result = result.replaceAll(placeholder, `<span class="variable-highlight">${escaped}</span>`);
+        }
+    }
+    return result;
 }
 
 // ============================================
