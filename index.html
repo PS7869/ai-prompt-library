@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI Prompt Library - Best practices from Claude, Gemini, and ChatGPT official documentation">
+    <title>AI Prompt Library | Claude, Gemini & ChatGPT Best Practices</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="/" class="logo">
+                <svg class="logo-icon" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="32" height="32" rx="8" fill="url(#logo-gradient)"/>
+                    <path d="M10 12h12M10 16h8M10 20h10" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                    <defs>
+                        <linearGradient id="logo-gradient" x1="0" y1="0" x2="32" y2="32">
+                            <stop stop-color="#7C3AED"/>
+                            <stop offset="0.5" stop-color="#4285F4"/>
+                            <stop offset="1" stop-color="#10A37F"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <span class="logo-text">AI Prompt Library</span>
+            </a>
+            <nav class="header-nav">
+                <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="github-link" aria-label="View on GitHub">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                    </svg>
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1 class="hero-title">AI Prompt Library</h1>
+                <p class="hero-subtitle">
+                    Master prompt engineering with best practices from
+                    <span class="platform-text claude">Claude</span>,
+                    <span class="platform-text gemini">Gemini</span> &
+                    <span class="platform-text chatgpt">ChatGPT</span>
+                </p>
+                <p class="hero-description">
+                    Curated examples and techniques from official documentation to help you write better prompts.
+                </p>
+            </div>
+        </section>
+
+        <!-- Filter Bar -->
+        <section class="filter-section">
+            <div class="filter-bar">
+                <!-- Search Input -->
+                <div class="search-container">
+                    <svg class="search-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M17.5 17.5L13.875 13.875M15.8333 9.16667C15.8333 12.8486 12.8486 15.8333 9.16667 15.8333C5.48477 15.8333 2.5 12.8486 2.5 9.16667C2.5 5.48477 5.48477 2.5 9.16667 2.5C12.8486 2.5 15.8333 5.48477 15.8333 9.16667Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <input
+                        type="text"
+                        id="search-input"
+                        class="search-input"
+                        placeholder="Search prompts..."
+                        aria-label="Search prompts"
+                    >
+                </div>
+
+                <!-- Platform Filters -->
+                <div class="platform-filters" role="group" aria-label="Filter by platform">
+                    <button class="platform-btn active" data-platform="all">
+                        All
+                    </button>
+                    <button class="platform-btn claude" data-platform="claude">
+                        <span class="platform-dot"></span>
+                        Claude
+                    </button>
+                    <button class="platform-btn gemini" data-platform="gemini">
+                        <span class="platform-dot"></span>
+                        Gemini
+                    </button>
+                    <button class="platform-btn chatgpt" data-platform="chatgpt">
+                        <span class="platform-dot"></span>
+                        ChatGPT
+                    </button>
+                    <button class="platform-btn universal" data-platform="universal">
+                        <span class="platform-dot"></span>
+                        Universal
+                    </button>
+                </div>
+
+                <!-- Category Filter -->
+                <div class="category-filter">
+                    <select id="category-select" class="category-select" aria-label="Filter by category">
+                        <option value="all">All Categories</option>
+                        <!-- Categories will be populated by JavaScript -->
+                    </select>
+                </div>
+            </div>
+
+            <!-- Second Filter Row: Difficulty + Framework -->
+            <div class="filter-bar filter-bar-secondary">
+                <!-- Difficulty Filters -->
+                <div class="difficulty-filters" role="group" aria-label="Filter by difficulty">
+                    <span class="filter-label">Level:</span>
+                    <button class="difficulty-btn active" data-difficulty="all">
+                        All
+                    </button>
+                    <button class="difficulty-btn beginner" data-difficulty="beginner">
+                        <span class="difficulty-dot"></span>
+                        Beginner
+                    </button>
+                    <button class="difficulty-btn intermediate" data-difficulty="intermediate">
+                        <span class="difficulty-dot"></span>
+                        Intermediate
+                    </button>
+                    <button class="difficulty-btn advanced" data-difficulty="advanced">
+                        <span class="difficulty-dot"></span>
+                        Advanced
+                    </button>
+                </div>
+
+                <!-- Framework Filter -->
+                <div class="framework-filter">
+                    <select id="framework-select" class="framework-select" aria-label="Filter by framework">
+                        <option value="all">All Frameworks</option>
+                        <!-- Frameworks will be populated by JavaScript -->
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Bar -->
+        <section class="stats-section">
+            <div class="stats-bar">
+                <p class="stats-text">
+                    Showing <span id="visible-count">0</span> of <span id="total-count">0</span> prompts
+                </p>
+                <button id="clear-filters" class="clear-filters-btn" hidden>
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M12 4L4 12M4 4L12 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                    Clear Filters
+                </button>
+            </div>
+        </section>
+
+        <!-- Prompt Grid -->
+        <section class="prompts-section">
+            <div id="prompts-grid" class="prompts-grid">
+                <!-- Prompt cards will be rendered here by JavaScript -->
+            </div>
+
+            <!-- Empty State -->
+            <div id="empty-state" class="empty-state" hidden>
+                <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+                    <circle cx="32" cy="32" r="30" stroke="currentColor" stroke-width="2" stroke-dasharray="4 4"/>
+                    <path d="M24 28L32 36L40 28" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <h3 class="empty-title">No prompts found</h3>
+                <p class="empty-description">Try adjusting your filters or search terms.</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-sources">
+                <h4 class="footer-heading">Sources</h4>
+                <ul class="footer-links">
+                    <li>
+                        <a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-4-best-practices" target="_blank" rel="noopener noreferrer">
+                            Claude Prompt Engineering Guide
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://ai.google.dev/gemini-api/docs/prompting-strategies" target="_blank" rel="noopener noreferrer">
+                            Gemini Prompting Strategies
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://platform.openai.com/docs/guides/prompt-engineering" target="_blank" rel="noopener noreferrer">
+                            OpenAI Prompt Engineering Guide
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="footer-meta">
+                <p class="footer-credit">
+                    Built with best practices from official AI documentation
+                </p>
+                <p class="footer-date">
+                    Last updated: February 2026
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Notification (for copy feedback) -->
+    <div id="toast" class="toast" role="alert" aria-live="polite" hidden>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M13.5 4.5L6 12L2.5 8.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>Copied to clipboard!</span>
+    </div>
+
+    <!-- Scripts -->
+    <script src="data/prompts.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
